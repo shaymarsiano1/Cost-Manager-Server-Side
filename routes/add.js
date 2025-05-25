@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
             description,
             category,
             sum,
-            date: date ? new Date(date) : undefined
+            date: date ? new Date(date) : new Date()
         });
 
         const savedCost = await newCost.save();
