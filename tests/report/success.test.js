@@ -1,7 +1,16 @@
+/**
+ * Success test for GET /api/report.
+ * Verifies that a valid request returns a structured monthly cost report grouped by category.
+ */
+
 const request = require('supertest');
 const app = require('../../index');
 
-describe('✔️ Success: GET /api/report', () => {
+describe('Success: GET /api/report', () => {
+
+    /**
+     * Should return a 200 response with user cost data grouped by predefined categories.
+     */
     it('should return a grouped cost report by category', async () => {
         const res = await request(app)
             .get('/api/report?id=123123&year=2025&month=6');

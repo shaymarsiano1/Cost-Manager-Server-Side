@@ -1,7 +1,16 @@
+/**
+ * Integration tests for successful POST /api/add.
+ * Validates that a cost item is added correctly when valid input is provided.
+ */
+
 const request = require('supertest');
 const app = require('../../index');
 
-describe('✔️ Success: POST /api/add', () => {
+describe('Success: POST /api/add', () => {
+
+    /**
+     * Should add a new cost item successfully and return it with 201 status.
+     */
     it('should add a valid cost item successfully', async () => {
         const res = await request(app)
             .post('/api/add')
