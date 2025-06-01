@@ -22,6 +22,5 @@ const CostSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
-
+}, { strict: false });
 module.exports = mongoose.model('Cost', CostSchema);
