@@ -22,39 +22,41 @@ const Cost = require('../models/Cost');
 const User = require('../models/User');
 
 router.post('/', async (req, res) => {
-    const { userid, description, category, sum, date } = req.body;
+    const requiredFields = ['userid', 'description', 'category', 'sum'];
 
-    // Validate required fields
-    if (!userid || !description || !category || !sum) {
-        return res.status(400).json({ error: "Missing required fields/api/add" });
+    // בדיקת שדות חובה
+    for (const field of requiredFields) {
+        if (!req.body[field]) {
+            return res.status(400).json({ error: `Missing required field: ${field}/api/add` });
+        }
     }
 
-    // Check if user exists
-    const userExists = await User.findOne({ id: userid });
+    // בדיקת קיום המשתמש
+    const userExists = await User.findOne({ id: req.body.userid });
     if (!userExists) {
         return res.status(404).json({ error: "User_not_found/api/add" });
     }
 
     try {
-        // Create new cost object
-        const newCost = new Cost({
-            userid,
-            description,
-            category,
-            sum,
-            date: date ? new Date(date) : new Date() // Use provided date or current date
-        });
+        // ודאי שהשדה date הוא Date אמיתי אם קיים
+        const costData = { ...req.body };
+        if (costData.date) {
+            costData.date = new Date(costData.date);
+        } else {
+            costData.date = new Date();
+        }
 
-        // Save to DB
+        // שמירה למסד
+        const newCost = new Cost(costData);
         const savedCost = await newCost.save();
 
-        // Return saved cost with 201 status
+        // הסרת שדות פנימיים מהתגובה
         const { __v, _id, ...cleanedCost } = savedCost.toObject();
         res.status(201).json(cleanedCost);
     } catch (err) {
-        // Handle server error
         res.status(500).json({ error: `${err.message}/api/add` });
     }
 });
+
 
 module.exports = router;
