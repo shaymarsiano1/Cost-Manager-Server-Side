@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     try {
-        // Simulate a failure if the query parameter ?forceError=true is provided
+        // Simulate a failure if the query parameter ? forceError=true is provided
         if (req.query.forceError === 'true') {
             throw new Error('Simulated failure');
         }

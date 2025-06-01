@@ -12,8 +12,7 @@ describe('Success: GET /api/report', () => {
      * Should return a 200 response with user cost data grouped by predefined categories.
      */
     it('should return a grouped cost report by category', async () => {
-        const res = await request(app)
-            .get('/api/report?id=123123&year=2025&month=6');
+        const res = await request(app).get('/api/report?id=123123&year=2025&month=6');
 
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('userid', 123123);

@@ -19,7 +19,6 @@
  * @returns {object} 500 - If the ID is invalid or a server error occurs
  */
 
-
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');

@@ -11,7 +11,6 @@ const mongoose = require('mongoose');
  */
 
 const UserSchema = new mongoose.Schema({
-
     // Unique numeric ID for the user
     id: {
         type: Number,
@@ -46,7 +45,6 @@ const UserSchema = new mongoose.Schema({
         enum: ['single', 'married', 'divorced', 'widowed'],
         required: true
     }
-
 });
 
 // Export the User model based on the schema

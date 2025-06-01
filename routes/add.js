@@ -24,21 +24,21 @@ const User = require('../models/User');
 router.post('/', async (req, res) => {
     const requiredFields = ['userid', 'description', 'category', 'sum'];
 
-    // בדיקת שדות חובה
+    // Check for required fields
     for (const field of requiredFields) {
         if (!req.body[field]) {
             return res.status(400).json({ error: `Missing required field: ${field}/api/add` });
         }
     }
 
-    // בדיקת קיום המשתמש
+    // Check if the user exists
     const userExists = await User.findOne({ id: req.body.userid });
     if (!userExists) {
         return res.status(404).json({ error: "User_not_found/api/add" });
     }
 
     try {
-        // ודאי שהשדה date הוא Date אמיתי אם קיים
+        // Ensure the date field is a valid Date object, or use current date if not provided
         const costData = { ...req.body };
         if (costData.date) {
             costData.date = new Date(costData.date);
@@ -46,17 +46,16 @@ router.post('/', async (req, res) => {
             costData.date = new Date();
         }
 
-        // שמירה למסד
+        // Save to database
         const newCost = new Cost(costData);
         const savedCost = await newCost.save();
 
-        // הסרת שדות פנימיים מהתגובה
+        // Remove internal fields from the response
         const { __v, _id, ...cleanedCost } = savedCost.toObject();
         res.status(201).json(cleanedCost);
     } catch (err) {
         res.status(500).json({ error: `${err.message}/api/add` });
     }
 });
-
 
 module.exports = router;
