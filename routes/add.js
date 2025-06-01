@@ -49,7 +49,8 @@ router.post('/', async (req, res) => {
         const savedCost = await newCost.save();
 
         // Return saved cost with 201 status
-        res.status(201).json(savedCost);
+        const { __v, _id, ...cleanedCost } = savedCost.toObject();
+        res.status(201).json(cleanedCost);
     } catch (err) {
         // Handle server error
         res.status(500).json({ error: `${err.message}/api/add` });
